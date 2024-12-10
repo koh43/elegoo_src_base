@@ -13,8 +13,7 @@ public:
         float   max_dist = ULTRASONIC_MAX_DIST
     );
     ~Ultrasonic();
-    void initialize();
-    float get_sensor_data();
+    bool get_sensor_data(float* us_dist);
 
 private:
     uint8_t trigPin_, echoPin_;
