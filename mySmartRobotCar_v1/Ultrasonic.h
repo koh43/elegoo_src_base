@@ -6,18 +6,10 @@
 
 class Ultrasonic {
 public:
-    Ultrasonic(
-        uint8_t trigPin = ULTRASONIC_TRIG_PIN,
-        uint8_t echoPin = ULTRASONIC_ECHO_PIN,
-        float   sensor_speed = ULTRASONIC_SENSOR_SPEED,
-        float   max_dist = ULTRASONIC_MAX_DIST
-    );
+    Ultrasonic();
     ~Ultrasonic();
-    bool get_sensor_data(float* us_dist);
-
-private:
-    uint8_t trigPin_, echoPin_;
-    float   sensor_speed_, max_dist_;
+    void Init();
+    bool Distance(float* us_dist);
 };
 
 #endif // ULTRASONIC_H

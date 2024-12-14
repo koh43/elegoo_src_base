@@ -1,36 +1,34 @@
 #include "Ultrasonic.h"
 
-Ultrasonic::Ultrasonic(
-    uint8_t trigPin, 
-    uint8_t echoPin, 
-    float sensor_speed, 
-    float max_dist
-):
-trigPin_(trigPin), echoPin_(echoPin), sensor_speed_(sensor_speed), max_dist_(max_dist) {
-    pinMode(trigPin_, OUTPUT);
-    pinMode(echoPin_, INPUT);
+Ultrasonic::Ultrasonic() {}
+
+Ultrasonic::~Ultrasonic() {
+    pinMode(ULTRASONIC_TRIG_PIN, INPUT);
 }
 
-Ultrasonic::~Ultrasonic() {}
+void Ultrasonic::Init() {
+    pinMode(ULTRASONIC_TRIG_PIN, OUTPUT);
+    pinMode(ULTRASONIC_ECHO_PIN, INPUT);
+}
 
-bool Ultrasonic::get_sensor_data(float* us_dist) {
-    digitalWrite(trigPin_, LOW);
+bool Ultrasonic::Distance(float* us_dist) {
+    digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
     delayMicroseconds(2);
-    digitalWrite(trigPin_, HIGH);
+    digitalWrite(ULTRASONIC_TRIG_PIN, HIGH);
     delayMicroseconds(10);
-    digitalWrite(trigPin_, LOW);
+    digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
 
     // Measure duration of echo signal with a timeout of 30ms
-    float duration = pulseIn(echoPin_, HIGH, 30000); // Timeout in microseconds
+    float duration = pulseIn(ULTRASONIC_ECHO_PIN, HIGH, 30000); // Timeout in microseconds
     if (duration <= 0) { // Handle no response or invalid signal
         *us_dist = -1;
         return false;
     }
 
-    float distance = duration*sensor_speed_/2; // (cm)
+    float distance = duration*ULTRASONIC_SENSOR_SPEED/2; // (cm)
     
-    if (distance > max_dist_) {
-        *us_dist = max_dist_;
+    if (distance > ULTRASONIC_MAX_DIST) {
+        *us_dist = ULTRASONIC_MAX_DIST;
     }
     else {
         *us_dist = distance;        

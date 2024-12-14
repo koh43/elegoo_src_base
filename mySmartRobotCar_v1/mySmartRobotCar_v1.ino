@@ -1,57 +1,36 @@
-#include <avr/wdt.h>
-#include <IRremote.h>
-#include <Servo.h>
-#include "SmartCar.h"
 #include "ConstConfig.h"
+#include "SmartCar.h"
 
-/*
-For some reason, the IR remote controller works properlly
-only when the object is defined globally (no idea why :/).
-Otherwise, you might get different raw values when pressing the
-same button.
-Please use IRremote versions 2.x.x or lower
-*/
-#ifdef USE_IR_RM_CTRL
-IRrecv irrecv(IR_RECEIVER_PIN); //  Create an infrared receive drive object
-decode_results results;
-#endif
-
-#ifdef USE_SERVO_CTRL
-Servo servo;
-#endif
-
-#ifdef RUN_SMART_CAR
-SmartCar smart_car(
-    servo
-);
+SmartCar smart_car;
 
 void setup() {
     Serial.begin(115200);
-#ifdef USE_IR_RM_CTRL
-    irrecv.enableIRIn();
-#endif
-    // wdt_enable(WDTO_2S);
+    smart_car.Init();
 }
 
 void loop() {
-    // Sensor motion timing updates
-    smart_car.servo_update();
-    // test ultrasonic sensor
+// test ultrasonic sensor
+#ifdef USE_ULTRASONIC
     float us_dist;
     if (smart_car.get_us_dist(&us_dist)) {
         Serial.print("Distance: ");
         Serial.print(us_dist);
         Serial.print(" (cm)\n");
     }
-    // test ir remote controller
+#endif
+// test ir remote controller
 #ifdef USE_IR_RM_CTRL
-    uint8_t ir_rm_ctrl_data;
-    if(smart_car.get_ir_rm_ctrl_input(irrecv, results, &ir_rm_ctrl_data)) {
+    char ir_rm_ctrl_data;
+    if (smart_car.get_ctrl_input(&ir_rm_ctrl_data)) {
         Serial.print("IR Remote Input: ");
         Serial.print(ir_rm_ctrl_data);
         Serial.print(" \n");
     }
+
 #endif
+// test servo motor
+#ifdef USE_SERVO_CTRL
+    smart_car.servo_update();
     if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
         input.trim(); // Remove any trailing spaces or newline characters
@@ -67,16 +46,16 @@ void loop() {
             Serial.println("Executing letter commands...");
             for (unsigned int i = 0; i < input.length(); i++) {
                 char command = input.charAt(i);
-                servoCommand(command);  // Process each command letter
+                servoCommand(smart_car, command);  // Process each command letter
             }
         }
     }
-    delay(500);
-}
 #endif
 
+}
+
 // Function to check if a string represents a number
-bool isNumber(String input) {
+bool isNumber(String& input) {
     for (unsigned int i = 0; i < input.length(); i++) {
         if (!isdigit(input.charAt(i))) {
             return false; // If a character is not a digit, it's not a number
@@ -85,8 +64,7 @@ bool isNumber(String input) {
     return true; // It's a number
 }
 
-// Function to handle letter servo commands
-void servoCommand(char command) {
+void servoCommand(SmartCar& smart_car, char command) {
     switch (command) {
         case 'A':
             Serial.println("Turning Left");

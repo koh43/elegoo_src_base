@@ -1,20 +1,24 @@
 #include "Servo_Ctrl.h"
 
-Servo_Ctrl::Servo_Ctrl(Servo& servo, uint8_t servo_pin) : servo_(&servo) {
-    servo_->attach(
-        servo_pin,
-        SERVO_DEGREE_ZERO_POS,
-        SERVO_DEGREE_PI_POS
-    );
-    MoveTo(init_angle_);
+Servo_Ctrl::Servo_Ctrl(Servo& servo) : servo_(&servo) {
+    
 }
 
 Servo_Ctrl::~Servo_Ctrl() {
     servo_->detach();
 }
 
+void Servo_Ctrl::Init() {
+    servo_->attach(
+        SERVO_PIN,
+        SERVO_DEGREE_ZERO_POS,
+        SERVO_DEGREE_PI_POS
+    );
+    MoveTo(SERVO_INIT_ANGLE);
+}
+
 void Servo_Ctrl::Reset() {
-    MoveTo(init_angle_);
+    MoveTo(SERVO_INIT_ANGLE);
 }
 
 void Servo_Ctrl::MoveTo(uint8_t angle) {

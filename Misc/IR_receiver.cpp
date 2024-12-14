@@ -41,7 +41,6 @@ bool IR_receiver::CtrlrInput(char* data) {
 
 // private
 void IR_receiver::init_buttons_map() {
-#ifdef USE_IR_RM_CTRL
     buttons_map_ = {
         {RECV_0    , '0'},
         {RECV_1    , '1'},
@@ -61,5 +60,4 @@ void IR_receiver::init_buttons_map() {
         {RECV_right, 'R'},
         {RECV_ok   , 'K'},
     };
-#endif
 }
