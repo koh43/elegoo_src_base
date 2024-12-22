@@ -16,7 +16,7 @@ by Ki-Hwan Oh
 
 ## Stars & Forks
 
-![GitHub Repo stars](https://img.shields.io/github/stars/koh43/ros2_smart_car_cpp?style=social)
+[![Star History Chart](https://api.star-history.com/svg?repos=koh43/ros2_smart_car_cpp&type=Date)](https://star-history.com/#koh43/ros2_smart_car_cpp&Date)
 
 If you have found this repo useful, please click the star button!
 Also, if you want to upgrade the project, please fork this repo! 
