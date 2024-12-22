@@ -35,8 +35,9 @@ Feel free to start a discussion if you have innovative ideas to share! 😊
 
 ---
 
-## ⭐ Stars & 🍴 Forks
+## ⭐ & 🍴
 If you find this repository helpful, click the ⭐ button to show your support!
+
 If you'd like to modify the project, feel free to 🍴 this repo!
 
 [![Star History Chart](https://api.star-history.com/svg?repos=koh43/ros2_smart_car_cpp&type=Date)](https://star-history.com/#koh43/ros2_smart_car_cpp&Date)
