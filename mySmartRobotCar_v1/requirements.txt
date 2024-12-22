@@ -1,2 +1,5 @@
+[Libraries used for this module]
 IRremote <= 2.8.1
-ArduinoSTL
+ArduinoSTL (v 1.3.3)
+MPU6050 (v 1.4.1)
+FastLED (v 3.9.4)

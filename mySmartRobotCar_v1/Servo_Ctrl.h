@@ -3,7 +3,14 @@
 
 #include <Servo.h>
 #include <Arduino.h>
-#include "ConstConfig.h"
+
+constexpr uint8_t SERVO_PIN = 10;
+constexpr unsigned int SERVO_DEGREE_ZERO_POS = 500;
+constexpr unsigned int SERVO_DEGREE_PI_POS = 2400;
+constexpr uint8_t SERVO_INIT_ANGLE = 90;
+constexpr uint8_t SERVO_MIN_DEGREE = 0;
+constexpr uint8_t SERVO_MAX_DEGREE = 180;
+constexpr float SERVO_SPEED = 90 / 500; // 90 degrees per 500ms
 
 class Servo_Ctrl {
 public:

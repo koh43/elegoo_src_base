@@ -1,11 +1,11 @@
-#include "ConstConfig.h"
 #include "SmartCar.h"
 
 SmartCar smart_car;
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     smart_car.Init();
+    smart_car.led_set_color(0, CRGB::Red);
 }
 
 void loop() {
@@ -30,7 +30,6 @@ void loop() {
 #endif
 // test servo motor
 #ifdef USE_SERVO_CTRL
-    smart_car.servo_update();
     if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
         input.trim(); // Remove any trailing spaces or newline characters
@@ -50,6 +49,21 @@ void loop() {
             }
         }
     }
+    smart_car.servo_update();
+#endif
+
+// test voltage sensor
+#ifdef USE_VOLTAGE
+    float volt_ms;
+    smart_car.measure_voltage(&volt_ms);
+    Serial.print("Voltage: ");
+    Serial.print(volt_ms);
+    Serial.print(" (V)\n");
+#endif
+
+// test led control
+#ifdef USE_LED_CTRL
+    smart_car.led_blink(0);
 #endif
 
 }
@@ -58,12 +72,13 @@ void loop() {
 bool isNumber(String& input) {
     for (unsigned int i = 0; i < input.length(); i++) {
         if (!isdigit(input.charAt(i))) {
-            return false; // If a character is not a digit, it's not a number
+            return false;
         }
     }
-    return true; // It's a number
+    return true;
 }
 
+#ifdef USE_SERVO_CTRL
 void servoCommand(SmartCar& smart_car, char command) {
     switch (command) {
         case 'A':
@@ -84,3 +99,4 @@ void servoCommand(SmartCar& smart_car, char command) {
             break;
     }
 }
+#endif

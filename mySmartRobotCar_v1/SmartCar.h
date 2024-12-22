@@ -3,8 +3,24 @@
 
 #include "ConstConfig.h"
 
-class SmartCar {
+#ifdef USE_ULTRASONIC
+#include "Ultrasonic.h"
+#endif
 
+#ifdef USE_SERVO_CTRL
+#include "Servo_Ctrl.h"
+#endif
+
+#ifdef USE_VOLTAGE
+#include "Voltage.h"
+#endif
+
+#ifdef USE_LED_CTRL
+#include "LED_ctrl.h"
+#endif
+
+class SmartCar {
+// ===== public =====
 public:
 // Constructor and Destructor
     SmartCar();
@@ -13,7 +29,6 @@ public:
 
 // Ultrasonic functions
 #ifdef USE_ULTRASONIC
-#include "Ultrasonic.h"
     bool get_us_dist(float* us_dist);
 #endif
 
@@ -25,7 +40,6 @@ public:
 
 // Servo Control functions
 #ifdef USE_SERVO_CTRL
-#include "Servo_Ctrl.h"
     void servo_reset();
     void servo_move_to(uint8_t angle);
     void servo_update();
@@ -36,9 +50,21 @@ public:
 
 // Voltage measurement
 #ifdef USE_VOLTAGE
-
+    void measure_voltage(float* out);
 #endif
 
+// LED Control
+#ifdef USE_LED_CTRL
+    void led_set_brightness(uint8_t brightness);
+    void led_set_blink_period(int period);
+    void led_set_color(uint8_t led_id, CRGB color);
+    void led_set_color(uint8_t led_id, uint8_t r, uint8_t g, uint8_t b);
+    void led_turn_on(uint8_t led_id);
+    void led_turn_off(uint8_t led_id);
+    void led_blink(uint8_t led_id);
+#endif
+
+// ===== private =====
 private:
 #ifdef USE_ULTRASONIC 
     Ultrasonic us_;
@@ -51,6 +77,15 @@ private:
 #ifdef USE_SERVO_CTRL
     Servo_Ctrl* servo_ctrl_;
 #endif
+
+#ifdef USE_VOLTAGE
+    Voltage volt_;
+#endif
+
+#ifdef USE_LED_CTRL
+    LED_Ctrl led_ctrl_;
+#endif
+
 };
 
 #endif // SMART_CAR_H
