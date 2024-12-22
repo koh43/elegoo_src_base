@@ -32,6 +32,13 @@ Feel free to start a discussion if you have innovative ideas to share! 😊
 - ❌ **ITR20001** (Line tracking)
 - ❌ **Power Motors**
 - ❌ **MPU6050** (Inertial Measurement Unit)
+- ❌ **Camera**
+
+---
+
+## 📃 TODO List
+- [ ] Finish implementing the rest of the sensors.
+- [ ] Add publisher/subscriber for each sensor.
 
 ---
 
