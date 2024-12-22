@@ -20,7 +20,7 @@
 #endif
 
 class SmartCar {
-// ===== public =====
+// ========== public ==========
 public:
 // Constructor and Destructor
     SmartCar();
@@ -64,7 +64,7 @@ public:
     void led_blink(uint8_t led_id);
 #endif
 
-// ===== private =====
+// ========== private ==========
 private:
 #ifdef USE_ULTRASONIC 
     Ultrasonic us_;

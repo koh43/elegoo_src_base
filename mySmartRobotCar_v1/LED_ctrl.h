@@ -6,7 +6,7 @@
 
 constexpr uint8_t NUM_LEDS = 1;
 constexpr uint8_t LED_PIN  = 4;
-constexpr uint8_t INIT_LED_BRIGHTNESS = 50;
+constexpr uint8_t INIT_LED_BRIGHTNESS = 5;
 constexpr int INIT_LED_BLINK_PERIOD = 1000;
 
 class LED_Ctrl {
@@ -16,7 +16,7 @@ public:
     void Init();
     void SetBrightness(uint8_t brightness);
     void SetBlinkPeriod(int period);
-    void SetColor(uint8_t led_id, CRGB color);
+    void SetColor(uint8_t led_id, CRGB& color);
     void SetColor(uint8_t led_id, uint8_t r, uint8_t g, uint8_t b);
     void TurnOn(uint8_t led_id);
     void TurnOff(uint8_t led_id);

@@ -3,10 +3,12 @@
 SmartCar smart_car;
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     smart_car.Init();
+#ifdef USE_LED_CTRL
     smart_car.led_set_color(0, CRGB::Red);
-}
+#endif
+} // setup()
 
 void loop() {
 // test ultrasonic sensor
@@ -66,9 +68,10 @@ void loop() {
     smart_car.led_blink(0);
 #endif
 
-}
+} // loop()
 
 // Function to check if a string represents a number
+#ifdef USE_SERVO_CTRL
 bool isNumber(String& input) {
     for (unsigned int i = 0; i < input.length(); i++) {
         if (!isdigit(input.charAt(i))) {
@@ -78,7 +81,6 @@ bool isNumber(String& input) {
     return true;
 }
 
-#ifdef USE_SERVO_CTRL
 void servoCommand(SmartCar& smart_car, char command) {
     switch (command) {
         case 'A':

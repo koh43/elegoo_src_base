@@ -41,7 +41,7 @@ SmartCar::~SmartCar() {
 #endif
 
 #ifdef USE_LED_CTRL
-    led_ctrl_->~LED_Ctrl();
+    led_ctrl_.~LED_Ctrl();
 #endif
 }
 
@@ -65,7 +65,7 @@ void SmartCar::Init() {
 #endif
 
 #ifdef USE_LED_CTRL
-    led_ctrl_->Init();
+    led_ctrl_.Init();
 #endif
 }
 
@@ -115,31 +115,31 @@ void SmartCar::measure_voltage(float* v_out) {
 // LED Control
 #ifdef USE_LED_CTRL
 void SmartCar::led_set_brightness(uint8_t brightness) {
-    led_ctrl_->SetBrightness(brightness);
+    led_ctrl_.SetBrightness(brightness);
 }
 
 void SmartCar::led_set_blink_period(int period) {
-    led_ctrl_->SetBlinkPeriod(period);
+    led_ctrl_.SetBlinkPeriod(period);
 }
 
 void SmartCar::led_set_color(uint8_t led_id, CRGB color) {
-    led_ctrl_->SetColor(led_id, color);
+    led_ctrl_.SetColor(led_id, color);
 }
 
 void SmartCar::led_set_color(uint8_t led_id, uint8_t r, uint8_t g, uint8_t b) {
-    led_ctrl_->SetColor(led_id, r, g, b);
+    led_ctrl_.SetColor(led_id, r, g, b);
 }
 
 void SmartCar::led_turn_on(uint8_t led_id) {
-    led_ctrl_->TurnOn(led_id);
+    led_ctrl_.TurnOn(led_id);
 }
 
 void SmartCar::led_turn_off(uint8_t led_id) {
-    led_ctrl_->TurnOff(led_id);
+    led_ctrl_.TurnOff(led_id);
 }
 
 void SmartCar::led_blink(uint8_t led_id) {
-    led_ctrl_->Blink(led_id);
+    led_ctrl_.Blink(led_id);
 }
 
 #endif
