@@ -1,44 +1,42 @@
 # ELEGOO Smart Robot Car V4.0 for ROS2
 
-## Not the official code (yet), just for my own needs :)
+## 🚀 Not the official code (yet), just for personal use!  
+By **Ki-Hwan Oh**
 
-By Ki-Hwan Oh
+---
 
-## Official Codes
-[Official Website](https://www.elegoo.com/blogs/arduino-projects/elegoo-smart-robot-car-kit-v4-0-tutorial?srsltid=AfmBOorYwe8JgJe90HhXPzKqtYqGKDxzCjyLMzpd4t6CisLi9G8mrOoW)
+## 🔗 Official Resources
+- [Official Website](https://www.elegoo.com/blogs/arduino-projects/elegoo-smart-robot-car-kit-v4-0-tutorial?srsltid=AfmBOorYwe8JgJe90HhXPzKqtYqGKDxzCjyLMzpd4t6CisLi9G8mrOoW)
+- [Official GitHub Repository](https://github.com/elegooofficial/ELEGOO-Smart-Robot-Car-Kit-V4.0)
 
-[Official GitHub](https://github.com/elegooofficial/ELEGOO-Smart-Robot-Car-Kit-V4.0)
+---
 
-## Summary
-The official code is more towards their app for controlling the robot.
+## 📋 Summary
+The official code is designed mainly for their mobile app to control the robot.
 
-It might be more useful to use the robot on ROS2 for further applications (e.g., control the robot based on VLA model results.)
+This repository aims to make the robot usable with **ROS2** for advanced applications.
 
-Feel free to add discussions if you have any brilliant ideas you would like to share 😉
+Additionally, the header files for each sensor are modular, allowing others to use them for various purposes.
 
-## Available Sensors
-✅ white square LED.
+Feel free to start a discussion if you have innovative ideas to share! 😊
 
-✅ Ultrasonic Sensor.
+---
 
-🟨 IR Sensor (code is ready, but my IR sensor has some issues).
+## 📟 Available Sensors and Features
+- ✅ **White Square LED**
+- ✅ **Ultrasonic Sensor**
+- 🟨 **IR Sensor** (code is ready, but there are hardware issues with my IR sensor)
+- ✅ **Servo Motor** (used for ultrasonic sensor and camera)
+- ✅ **Voltage Measurement** (A3 pin)
+- ❌ **Key Detection** (likely the small 4-direction key on the hat)
+- ❌ **ITR20001** (Line tracking)
+- ❌ **Power Motors**
+- ❌ **MPU6050** (Inertial Measurement Unit)
 
-✅ Servo motor for ultrasonic sensor and camera.
+---
 
-✅ Voltage measurement (A3 pin).
-
-❌ Key (think it's the small 4-direction key on the hat) detection.
-
-❌ ITR20001 (Line tracking).
-
-❌ Power motors.
-
-❌ MPU6050.
-
-## Stars & Forks
+## ⭐ Stars & 🍴 Forks
+If you find this repository helpful, click the ⭐ button to show your support!
+If you'd like to modify the project, feel free to 🍴 this repo!
 
 [![Star History Chart](https://api.star-history.com/svg?repos=koh43/ros2_smart_car_cpp&type=Date)](https://star-history.com/#koh43/ros2_smart_car_cpp&Date)
-
-If you have found this repo useful, please click the ⭐ button!
-
-Also, if you want to upgrade the project, please 🍴 this repo! 
