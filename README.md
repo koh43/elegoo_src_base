@@ -1,7 +1,7 @@
 # ELEGOO Smart Robot Car V4.0 for ROS2
 
 ## Not the official code (yet), just for my own needs :)
-by Ki-Hwan Oh
+By Ki-Hwan Oh
 
 ## Available Sensors
 - [x] white square LED.
@@ -19,4 +19,5 @@ by Ki-Hwan Oh
 [![Star History Chart](https://api.star-history.com/svg?repos=koh43/ros2_smart_car_cpp&type=Date)](https://star-history.com/#koh43/ros2_smart_car_cpp&Date)
 
 If you have found this repo useful, please click the star button!
+
 Also, if you want to upgrade the project, please fork this repo! 
