@@ -23,16 +23,18 @@ Feel free to start a discussion if you have innovative ideas to share! 😊
 ---
 
 ## 📟 Available Sensors and Features
-- ✅ **White Square LED**
-- ✅ **Ultrasonic Sensor**
-- 🟨 **IR Sensor** (code is ready, but there are hardware issues with my IR sensor)
-- ✅ **Servo Motor** (used for ultrasonic sensor and camera)
-- ✅ **Voltage Measurement** (A3 pin)
-- ❌ **Key Detection** (likely the small 4-direction key on the hat)
-- ❌ **ITR20001** (Line tracking)
-- ❌ **Power Motors**
-- ❌ **MPU6050** (Inertial Measurement Unit)
-- ❌ **Camera**
+| Status | Component                | Comments                                                  |
+|--------|--------------------------|-----------------------------------------------------------|
+| ✅     | **White Square LED**     | Completed.                                                |
+| ✅     | **Ultrasonic Sensor**    | Completed.                                                |
+| 🟨     | **IR Sensor**            | Code ready, but there are issues with the sensor.         |
+| ✅     | **Servo Motor**          | Completed (to move the ultrasonic sensor and camera).     |
+| ✅     | **Voltage Measurement**  | Completed (A3 pin).                                       |
+| ✅     | **Key Detection**        | Used to read the number of clicks.                        |
+| ❌     | **ITR20001**             | Not started (Line tracking).                              |
+| ❌     | **Power Motors**         | Not started.                                              |
+| ❌     | **MPU6050**              | Not started (Inertial Measurement Unit).                  |
+| ❌     | **Camera**               | Not started.                                              |
 
 ---
 
