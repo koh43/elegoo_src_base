@@ -67,7 +67,12 @@ void SmartCar::Init() {
 #ifdef USE_LED_CTRL
     led_ctrl_.Init();
 #endif
-}
+
+#ifdef USE_KEY_DETECT
+    key_detect_.Init();
+#endif
+
+} // Init()
 
 // Ultrasonic
 #ifdef USE_ULTRASONIC
@@ -141,5 +146,14 @@ void SmartCar::led_turn_off(uint8_t led_id) {
 void SmartCar::led_blink(uint8_t led_id) {
     led_ctrl_.Blink(led_id);
 }
+#endif
 
+#ifdef USE_KEY_DETECT
+void SmartCar::key_detect_update() {
+    key_detect_.UpdateKeyInput();
+}
+
+void SmartCar::key_detect_get(uint8_t* key_data) {
+    key_detect_.GetKeyInput(key_data);
+}
 #endif

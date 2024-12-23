@@ -19,6 +19,10 @@
 #include "LED_ctrl.h"
 #endif
 
+#ifdef USE_KEY_DETECT
+#include "Key_Detect.h"
+#endif
+
 class SmartCar {
 // ========== public ==========
 public:
@@ -64,6 +68,12 @@ public:
     void led_blink(uint8_t led_id);
 #endif
 
+// Key Detection
+#ifdef USE_KEY_DETECT
+    void key_detect_update();
+    void key_detect_get(uint8_t* key_data);
+#endif
+
 // ========== private ==========
 private:
 #ifdef USE_ULTRASONIC 
@@ -84,6 +94,10 @@ private:
 
 #ifdef USE_LED_CTRL
     LED_Ctrl led_ctrl_;
+#endif
+
+#ifdef USE_KEY_DETECT
+    Key_Detect key_detect_;
 #endif
 
 };

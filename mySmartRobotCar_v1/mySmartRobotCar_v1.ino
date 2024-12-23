@@ -68,6 +68,16 @@ void loop() {
     smart_car.led_blink(0);
 #endif
 
+// test key detect
+#ifdef USE_KEY_DETECT
+    smart_car.key_detect_update();
+    uint8_t key_data;
+    smart_car.key_detect_get(&key_data);
+    Serial.print("Key Data: ");
+    Serial.print(key_data);
+    Serial.print(" \n");
+#endif
+
 } // loop()
 
 // Function to check if a string represents a number
