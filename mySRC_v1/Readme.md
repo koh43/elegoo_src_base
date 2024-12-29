@@ -56,4 +56,7 @@ In VS Code:
 
 ---
 
+## Troubleshooting
+1. If you have compile errors related to "std::nothrow", follow this [link](https://github.com/mike-matera/ArduinoSTL/issues/84#issuecomment-1337008712)
+
 You are now ready to use Arduino-CLI with VS Code!
