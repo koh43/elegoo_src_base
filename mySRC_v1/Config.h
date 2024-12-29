@@ -1,5 +1,5 @@
-#ifndef CONST_CONFIG_H
-#define CONST_CONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 /*
 Comment or uncomment based on the codes you want to run!
@@ -11,4 +11,4 @@ Comment or uncomment based on the codes you want to run!
 #define USE_LED_CTRL
 #define USE_KEY_DETECT
 
-#endif // CONST_CONFIG_H
+#endif // CONFIG_H

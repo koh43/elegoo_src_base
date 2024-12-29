@@ -1,4 +1,4 @@
-#include "Servo_Ctrl.h"
+#include "./Servo_Ctrl.h"
 
 Servo_Ctrl::Servo_Ctrl(Servo& servo) : servo_(&servo) {
     

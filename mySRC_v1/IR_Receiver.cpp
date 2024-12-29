@@ -1,4 +1,4 @@
-#include "IR_receiver.h"
+#include "IR_Receiver.h"
 
 // public
 IR_receiver::IR_receiver(IRrecv& irrecv, decode_results& dr)

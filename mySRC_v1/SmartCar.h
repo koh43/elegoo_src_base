@@ -1,10 +1,14 @@
 #ifndef SMART_CAR_H
 #define SMART_CAR_H
 
-#include "ConstConfig.h"
+#include "Config.h"
 
 #ifdef USE_ULTRASONIC
 #include "Ultrasonic.h"
+#endif
+
+#ifdef USE_IR_RM_CTRL
+#include "IR_Receiver.h"
 #endif
 
 #ifdef USE_SERVO_CTRL
@@ -16,7 +20,7 @@
 #endif
 
 #ifdef USE_LED_CTRL
-#include "LED_ctrl.h"
+#include "LED_Ctrl.h"
 #endif
 
 #ifdef USE_KEY_DETECT
@@ -38,7 +42,7 @@ public:
 
 // IR remote controller functions
 #ifdef USE_IR_RM_CTRL
-#include "IR_receiver.h"
+
     bool get_ir_rm_ctrl_input(IRrecv& irrecv, decode_results& results, uint8_t* ir_rm_ctrl_data);
 #endif
 
