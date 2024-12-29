@@ -21,7 +21,7 @@ Additionally, the header files for each sensor are modular, allowing others to u
 Feel free to start a discussion if you have innovative ideas to share! 😊
 
 ---
-## Setup
+## ⚙️ Setup
 [Arduino-CLI with VS Code Setup](./mySRC_v1/Readme.md)
 
 ---
