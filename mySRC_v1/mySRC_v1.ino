@@ -78,6 +78,23 @@ void loop() {
     Serial.print(" \n");
 #endif
 
+// test line tracker
+#ifdef USE_LINE_TRACKER
+    int lt_l;
+    int lt_m;
+    int lt_r;
+    smart_car.get_line_tracker(&lt_l, 'L');
+    smart_car.get_line_tracker(&lt_m, 'M');
+    smart_car.get_line_tracker(&lt_r, 'R');
+    Serial.print("Line Tracker (L, M, R): ");
+    Serial.print(lt_l);
+    Serial.print(", ");
+    Serial.print(lt_m);
+    Serial.print(", ");
+    Serial.print(lt_r);
+    Serial.print(" \n");
+#endif
+
 } // loop()
 
 // Function to check if a string represents a number

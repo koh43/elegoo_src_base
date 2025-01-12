@@ -27,6 +27,10 @@
 #include "Key_Detect.h"
 #endif
 
+#ifdef USE_LINE_TRACKER
+#include "LineTracker.h"
+#endif
+
 class SmartCar {
 // ========== public ==========
 public:
@@ -42,7 +46,6 @@ public:
 
 // IR remote controller functions
 #ifdef USE_IR_RM_CTRL
-
     bool get_ir_rm_ctrl_input(IRrecv& irrecv, decode_results& results, uint8_t* ir_rm_ctrl_data);
 #endif
 
@@ -78,6 +81,11 @@ public:
     void key_detect_get(uint8_t* key_data);
 #endif
 
+// Line Tracker
+#ifdef USE_LINE_TRACKER
+    void get_line_tracker(int* out, const char& dir);
+#endif
+
 // ========== private ==========
 private:
 #ifdef USE_ULTRASONIC 
@@ -102,6 +110,10 @@ private:
 
 #ifdef USE_KEY_DETECT
     Key_Detect key_detect_;
+#endif
+
+#ifdef USE_LINE_TRACKER
+    LineTracker line_tracker_;
 #endif
 
 };

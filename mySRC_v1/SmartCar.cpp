@@ -72,6 +72,10 @@ void SmartCar::Init() {
     key_detect_.Init();
 #endif
 
+#ifdef USE_LINE_TRACKER
+    line_tracker_.Init();
+#endif
+
 } // Init()
 
 // Ultrasonic
@@ -155,5 +159,11 @@ void SmartCar::key_detect_update() {
 
 void SmartCar::key_detect_get(uint8_t* key_data) {
     key_detect_.GetKeyInput(key_data);
+}
+#endif
+
+#ifdef USE_LINE_TRACKER
+void SmartCar::get_line_tracker(int* out, const char& dir) {
+    line_tracker_.getAnalog(out, dir);
 }
 #endif
