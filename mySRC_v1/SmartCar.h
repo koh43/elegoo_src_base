@@ -31,6 +31,10 @@
 #include "LineTracker.h"
 #endif
 
+#ifdef USE_MOTOR_CTRL
+#include "Motor_Ctrl.h"
+#endif
+
 class SmartCar {
 // ========== public ==========
 public:
@@ -86,6 +90,15 @@ public:
     void get_line_tracker(int* out, const char& dir);
 #endif
 
+// Motor Control
+#ifdef USE_MOTOR_CTRL
+    void move_motor(
+        const char& side,
+        const bool& rot_dir,
+        const uint8_t& speed
+    );
+#endif
+
 // ========== private ==========
 private:
 #ifdef USE_ULTRASONIC 
@@ -114,6 +127,10 @@ private:
 
 #ifdef USE_LINE_TRACKER
     LineTracker line_tracker_;
+#endif
+
+#ifdef USE_MOTOR_CTRL
+    Motor_Ctrl motor_ctrl_;
 #endif
 
 };

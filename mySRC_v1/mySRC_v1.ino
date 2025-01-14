@@ -95,6 +95,12 @@ void loop() {
     Serial.print(" \n");
 #endif
 
+// test motor control
+#ifdef USE_MOTOR_CTRL
+    smart_car.move_motor('l', true, 100);
+    smart_car.move_motor('r', true, 50);
+#endif
+
 } // loop()
 
 // Function to check if a string represents a number

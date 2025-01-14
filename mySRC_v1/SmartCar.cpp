@@ -43,6 +43,19 @@ SmartCar::~SmartCar() {
 #ifdef USE_LED_CTRL
     led_ctrl_.~LED_Ctrl();
 #endif
+
+#ifdef USE_KEY_DETECT
+    key_detect_.~Key_Detect();
+#endif
+
+#ifdef USE_LINE_TRACKER
+    line_tracker_.~LineTracker();
+#endif
+
+#ifdef USE_MOTOR_CTRL
+    motor_ctrl_.~Motor_Ctrl();
+#endif
+
 }
 
 // Initialize the sensors
@@ -74,6 +87,10 @@ void SmartCar::Init() {
 
 #ifdef USE_LINE_TRACKER
     line_tracker_.Init();
+#endif
+
+#ifdef USE_MOTOR_CTRL
+    motor_ctrl_.Init();
 #endif
 
 } // Init()
@@ -165,5 +182,15 @@ void SmartCar::key_detect_get(uint8_t* key_data) {
 #ifdef USE_LINE_TRACKER
 void SmartCar::get_line_tracker(int* out, const char& dir) {
     line_tracker_.getAnalog(out, dir);
+}
+#endif
+
+#ifdef USE_MOTOR_CTRL
+void SmartCar::move_motor(
+    const char& side,
+    const bool& rot_dir,
+    const uint8_t& speed
+) {
+    motor_ctrl_.Move(side, rot_dir, speed);
 }
 #endif
