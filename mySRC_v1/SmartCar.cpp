@@ -11,6 +11,11 @@ Servo servo;
 Servo_Ctrl servo_ctrl(servo);
 #endif
 
+#ifdef USE_IMU
+MPU6050 mpu;
+IMU imu(mpu);
+#endif
+
 // Constructor
 SmartCar::SmartCar() {
 #ifdef USE_IR_RM_CTRL
@@ -19,6 +24,9 @@ SmartCar::SmartCar() {
 #endif
 #ifdef USE_SERVO_CTRL
     servo_ctrl_ = &servo_ctrl;
+#endif
+#ifdef USE_IMU
+    imu_ = &imu;
 #endif
 }
 
@@ -93,6 +101,10 @@ void SmartCar::Init() {
     motor_ctrl_.Init();
 #endif
 
+#ifdef USE_IMU
+    imu_->Init();
+#endif
+
 } // Init()
 
 // Ultrasonic
@@ -140,15 +152,15 @@ void SmartCar::measure_voltage(float* v_out) {
 
 // LED Control
 #ifdef USE_LED_CTRL
-void SmartCar::led_set_brightness(uint8_t brightness) {
+void SmartCar::led_set_brightness(const uint8_t& brightness) {
     led_ctrl_.SetBrightness(brightness);
 }
 
-void SmartCar::led_set_blink_period(int period) {
+void SmartCar::led_set_blink_period(const int& period) {
     led_ctrl_.SetBlinkPeriod(period);
 }
 
-void SmartCar::led_set_color(uint8_t led_id, CRGB color) {
+void SmartCar::led_set_color(uint8_t led_id, const CRGB& color) {
     led_ctrl_.SetColor(led_id, color);
 }
 
@@ -162,6 +174,10 @@ void SmartCar::led_turn_on(uint8_t led_id) {
 
 void SmartCar::led_turn_off(uint8_t led_id) {
     led_ctrl_.TurnOff(led_id);
+}
+
+void SmartCar::led_switch(uint8_t led_id) {
+    led_ctrl_.Switch(led_id);
 }
 
 void SmartCar::led_blink(uint8_t led_id) {
@@ -192,5 +208,20 @@ void SmartCar::move_motor(
     const uint8_t& speed
 ) {
     motor_ctrl_.Move(side, rot_dir, speed);
+}
+#endif
+
+// IMU
+#ifdef USE_IMU
+void SmartCar::imu_update() {
+    imu_->Update();
+}
+
+void SmartCar::imu_set_offsets(const std::array<int16_t, 6>& offsets) {
+    imu_->setOffsets(offsets);
+}
+
+std::array<int16_t, 6> SmartCar::imu_get_offsets() {
+    return imu_->getOffsets();
 }
 #endif

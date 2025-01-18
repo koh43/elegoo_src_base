@@ -35,6 +35,10 @@
 #include "Motor_Ctrl.h"
 #endif
 
+#ifdef USE_IMU
+#include "IMU.h"
+#endif
+
 class SmartCar {
 // ========== public ==========
 public:
@@ -70,12 +74,13 @@ public:
 
 // LED Control
 #ifdef USE_LED_CTRL
-    void led_set_brightness(uint8_t brightness);
-    void led_set_blink_period(int period);
-    void led_set_color(uint8_t led_id, CRGB color);
+    void led_set_brightness(const uint8_t& brightness);
+    void led_set_blink_period(const int& period);
+    void led_set_color(uint8_t led_id, const CRGB& color);
     void led_set_color(uint8_t led_id, uint8_t r, uint8_t g, uint8_t b);
     void led_turn_on(uint8_t led_id);
     void led_turn_off(uint8_t led_id);
+    void led_switch(uint8_t led_id);
     void led_blink(uint8_t led_id);
 #endif
 
@@ -97,6 +102,13 @@ public:
         const bool& rot_dir,
         const uint8_t& speed
     );
+#endif
+
+// IMU
+#ifdef USE_IMU
+    void imu_update();
+    void imu_set_offsets(const std::array<int16_t, 6>& offsets);
+    std::array<int16_t, 6> imu_get_offsets();
 #endif
 
 // ========== private ==========
@@ -131,6 +143,10 @@ private:
 
 #ifdef USE_MOTOR_CTRL
     Motor_Ctrl motor_ctrl_;
+#endif
+
+#ifdef USE_IMU
+    IMU* imu_;
 #endif
 
 };

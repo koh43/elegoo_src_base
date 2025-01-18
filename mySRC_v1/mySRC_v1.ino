@@ -65,7 +65,8 @@ void loop() {
 
 // test led control
 #ifdef USE_LED_CTRL
-    smart_car.led_blink(0);
+    // smart_car.led_blink(0);
+    smart_car.led_switch(0);
 #endif
 
 // test key detect
@@ -97,8 +98,13 @@ void loop() {
 
 // test motor control
 #ifdef USE_MOTOR_CTRL
-    smart_car.move_motor('l', true, 100);
+    smart_car.move_motor('l', true, 50);
     smart_car.move_motor('r', true, 50);
+#endif
+
+// test IMU (MPU6050)
+#ifdef USE_IMU
+    smart_car.imu_update();
 #endif
 
 } // loop()

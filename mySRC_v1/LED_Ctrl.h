@@ -14,12 +14,13 @@ public:
     LED_Ctrl();
     ~LED_Ctrl();
     void Init();
-    void SetBrightness(uint8_t brightness);
-    void SetBlinkPeriod(int period);
-    void SetColor(uint8_t led_id, CRGB& color);
+    void SetBrightness(const uint8_t& brightness);
+    void SetBlinkPeriod(const int& period);
+    void SetColor(uint8_t led_id, const CRGB& color);
     void SetColor(uint8_t led_id, uint8_t r, uint8_t g, uint8_t b);
     void TurnOn(uint8_t led_id);
     void TurnOff(uint8_t led_id);
+    void Switch(uint8_t led_id);
     void Blink(uint8_t led_id);
 private:
     CRGB leds_[NUM_LEDS];

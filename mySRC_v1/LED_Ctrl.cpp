@@ -1,4 +1,4 @@
-#include "./LED_Ctrl.h"
+#include "LED_Ctrl.h"
 
 LED_Ctrl::LED_Ctrl() {}
 
@@ -16,15 +16,15 @@ void LED_Ctrl::Init() {
     time_elapsed_ = 0;
 }
 
-void LED_Ctrl::SetBrightness(uint8_t brightness) {
+void LED_Ctrl::SetBrightness(const uint8_t& brightness) {
     brightness_ = brightness;
 }
 
-void LED_Ctrl::SetBlinkPeriod(int period) {
+void LED_Ctrl::SetBlinkPeriod(const int& period) {
     period_ = period;
 }
 
-void LED_Ctrl::SetColor(uint8_t led_id, CRGB& color) {
+void LED_Ctrl::SetColor(uint8_t led_id, const CRGB& color) {
     Serial.println("Setting color");
     if (led_id < NUM_LEDS) {
         colors_[led_id] = color;
@@ -56,16 +56,20 @@ void LED_Ctrl::TurnOff(uint8_t led_id) {
     }
 }
 
+void LED_Ctrl::Switch(uint8_t led_id) {
+    if (is_on_) {
+        TurnOff(led_id);
+    }
+    else {
+        TurnOn(led_id);
+    }
+}
+
 void LED_Ctrl::Blink(uint8_t led_id) {
     current_time_ = millis();
     time_elapsed_ = current_time_ - last_time_;
     if (time_elapsed_ >= period_) {
-        if (is_on_) {
-            TurnOff(led_id);
-        }
-        else {
-            TurnOn(led_id);
-        }
+        Switch(led_id);
         last_time_ = current_time_;
     }
 }
