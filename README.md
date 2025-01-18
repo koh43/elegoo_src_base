@@ -34,9 +34,9 @@ Feel free to start a discussion if you have innovative ideas to share! 😊
 | ✅     | **Servo Motor**          | Completed (to move the ultrasonic sensor and camera).     |
 | ✅     | **Voltage Measurement**  | Completed (A3 pin).                                       |
 | ✅     | **Key Detection**        | Used to read the number of clicks.                        |
-| ✅     | **ITR20001**             | Completed.                                                |
-| ❌     | **Power Motors**         | Not started.                                              |
-| ❌     | **MPU6050**              | Not started (Inertial Measurement Unit).                  |
+| ✅     | **ITR20001**             | Completed (Line Tracking).                                |
+| ✅     | **Power Motors**         | Completed.                                                |
+| ✅     | **MPU6050**              | Completed (Inertial Measurement Unit).                    |
 | ❌     | **Camera**               | Not started.                                              |
 
 ---
