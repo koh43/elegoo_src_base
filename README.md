@@ -37,12 +37,12 @@ Feel free to start a discussion if you have innovative ideas to share! 😊
 | ✅     | **ITR20001**             | Completed (Line Tracking).                                |
 | ✅     | **Power Motors**         | Completed.                                                |
 | ✅     | **MPU6050**              | Completed (Inertial Measurement Unit).                    |
-| ❌     | **Camera**               | Not started.                                              |
+| ✅     | **Camera**               | Completed.                                                |
 
 ---
 
 ## 📃 TODO List
-- [ ] Finish implementing the rest of the sensors.
+- ✅ Finish implementing the rest of the sensors.
 - [ ] Add publisher/subscriber for each sensor.
 
 ---
