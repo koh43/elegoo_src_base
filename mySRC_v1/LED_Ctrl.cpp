@@ -25,7 +25,6 @@ void LED_Ctrl::SetBlinkPeriod(const int& period) {
 }
 
 void LED_Ctrl::SetColor(uint8_t led_id, const CRGB& color) {
-    Serial.println("Setting color");
     if (led_id < NUM_LEDS) {
         colors_[led_id] = color;
     }
@@ -43,7 +42,6 @@ void LED_Ctrl::TurnOn(uint8_t led_id) {
         FastLED.setBrightness(brightness_);
         leds_[led_id] = colors_[led_id];
         FastLED.show();
-        Serial.println("Turning on LED");
     }
 }
 
@@ -52,7 +50,6 @@ void LED_Ctrl::TurnOff(uint8_t led_id) {
     if (led_id < NUM_LEDS) {
         FastLED.clear();
         FastLED.show();
-        Serial.println("Turning off LED");
     }
 }
 
