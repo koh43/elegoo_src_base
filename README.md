@@ -1,4 +1,4 @@
-# ELEGOO Smart Robot Car V4.0 for ROS2
+# ELEGOO Smart Robot Car V4.0 Framework for ROS2
 
 ## 🚀 Not the official code (yet), just for personal use!  
 By **Ki-Hwan Oh**
@@ -17,6 +17,8 @@ The official code is designed mainly for their mobile app to control the robot.
 This repository aims to make the robot usable with **ROS2** for advanced applications.
 
 Additionally, the header files for each sensor are modular, allowing others to use them for various purposes.
+
+The codes in this repo transmit the Arduino's serial outputs and the camera stream through the ESP32 Wi-Fi.
 
 Feel free to start a discussion if you have innovative ideas to share! 😊
 
@@ -37,13 +39,12 @@ Feel free to start a discussion if you have innovative ideas to share! 😊
 | ✅     | **ITR20001**             | Completed (Line Tracking).                                |
 | ✅     | **Power Motors**         | Completed.                                                |
 | ✅     | **MPU6050**              | Completed (Inertial Measurement Unit).                    |
-| ✅     | **Camera**               | Completed.                                                |
+| ✅     | **Camera + Wi-Fi**       | Completed.                                                |
 
 ---
 
 ## 📃 TODO List
-- ✅ Finish implementing the rest of the sensors.
-- [ ] Add publisher/subscriber for each sensor.
+- [ ] Complete a separate repository to read the signals through Wi-Fi and publish them as ROS topics.
 
 ---
 
