@@ -43,8 +43,8 @@ private:
     // ===========================
     // Enter your WiFi credentials
     // ===========================
-    const char* ssid_ = "ATTiMRJrJa";
-    const char* password_ = "5f=88pf26i%f";
+    const char* ssid_ = "your_wifi_ssid";
+    const char* password_ = "your_wifi_password";
 };
 
 #endif // CAMERA_SERVER_H
