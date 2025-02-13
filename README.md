@@ -1,4 +1,4 @@
-# ELEGOO Smart Robot Car V4.0 Framework for ROS2
+# ELEGOO Smart Robot Car V4.0 Baseline for ROS2
 
 ## 🚀 Not the official code (yet), just for personal use!  
 By **Ki-Hwan Oh**
