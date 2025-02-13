@@ -672,13 +672,12 @@ static esp_err_t index_handler(httpd_req_t *req) {
 }
 
 // HTTP handler for the `/serial` URI
-static esp_err_t serial_handler(httpd_req_t *req) {
-    SerialHandler* handler = (SerialHandler*) req->user_ctx;
-    String data = handler->getLastData();
+extern SerialHandler serial_handler;
+static esp_err_t serial_http_handler(httpd_req_t *req) {
+    String data = serial_handler.getLastData();
 
     httpd_resp_set_type(req, "text/plain");
-    httpd_resp_send(req, data.c_str(), data.length());
-    return ESP_OK;
+    return httpd_resp_send(req, data.c_str(), data.length());
 }
 
 void startCameraServer() {
@@ -834,7 +833,7 @@ void startCameraServer() {
   httpd_uri_t serial_uri = {
     .uri = "/serial",
     .method = HTTP_GET,
-    .handler = serial_handler,
+    .handler = serial_http_handler,
     .user_ctx = NULL
 #ifdef CONFIG_HTTPD_WS_SUPPORT
     ,

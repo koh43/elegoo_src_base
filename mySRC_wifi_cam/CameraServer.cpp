@@ -39,13 +39,13 @@ void CameraServer::Init() {
     //                      for larger pre-allocated frame buffer.
     if (config.pixel_format == PIXFORMAT_JPEG) {
         if (psramFound()) {
-        config.jpeg_quality = 10;
-        config.fb_count = 2;
-        config.grab_mode = CAMERA_GRAB_LATEST;
+            config.jpeg_quality = 10;
+            config.fb_count = 2;
+            config.grab_mode = CAMERA_GRAB_LATEST;
         } else {
-        // Limit the frame size when PSRAM is not available
-        config.frame_size = FRAMESIZE_SVGA;
-        config.fb_location = CAMERA_FB_IN_DRAM;
+            // Limit the frame size when PSRAM is not available
+            config.frame_size = FRAMESIZE_SVGA;
+            config.fb_location = CAMERA_FB_IN_DRAM;
         }
     } else {
         // Best option for face detection/recognition
@@ -76,7 +76,12 @@ void CameraServer::Init() {
     }
     // drop down frame size for higher initial frame rate
     if (config.pixel_format == PIXFORMAT_JPEG) {
-        s->set_framesize(s, FRAMESIZE_QVGA);
+        // s->set_framesize(s, FRAMESIZE_UXGA); // 1600x1200
+        // s->set_framesize(s, FRAMESIZE_SXGA); // 1280x1024
+        // s->set_framesize(s, FRAMESIZE_HD);   // 1280x720
+        // s->set_framesize(s, FRAMESIZE_SVGA); // 800x600
+        s->set_framesize(s, FRAMESIZE_VGA);  // 640x480
+        // s->set_framesize(s, FRAMESIZE_QVGA); // 320x240
     }
 
     #if defined(CAMERA_MODEL_M5STACK_WIDE) || defined(CAMERA_MODEL_M5STACK_ESP32CAM)
