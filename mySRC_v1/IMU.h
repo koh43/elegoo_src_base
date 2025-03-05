@@ -12,7 +12,7 @@ public:
     IMU(MPU6050& mpu);
     ~IMU();
     void Init();
-    void Update();
+    void Update(String* imu_str);
     void setOffsets(const std::array<int16_t, 6>& offsets);
     std::array<int16_t, 6> getOffsets();
 private:

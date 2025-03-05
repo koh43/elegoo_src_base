@@ -20,9 +20,12 @@ void setup() {
 
 void loop() {
 	serial_handler.receiveData(Serial1);
+
+	// Check if it is receiving from the Arduino
 	// String last_data;
 	// last_data = serial_handler.getLastData();
 	// Serial.println(last_data);
+	
 	if (led_flag) {
 		digitalWrite(STATUS_LED_PIN, LOW);
 		led_flag = false;

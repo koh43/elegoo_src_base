@@ -24,18 +24,18 @@ void IMU::Init() {
     setOffsets({0,0,0,0,0,0});
 }
 
-void IMU::Update() {
+void IMU::Update(String* imu_str) {
     mpu_->getMotion6(
         &accel_.x, &accel_.y, &accel_.z,
         &gyro_.x, &gyro_.y, &gyro_.z
     );
-    Serial.print("a/g:\t");
-    Serial.print(accel_.x); Serial.print("\t");
-    Serial.print(accel_.y); Serial.print("\t");
-    Serial.print(accel_.z); Serial.print("\t");
-    Serial.print(gyro_.x); Serial.print("\t");
-    Serial.print(gyro_.y); Serial.print("\t");
-    Serial.println(gyro_.z);
+    *imu_str += "IMU:";
+    *imu_str += accel_.x; *imu_str += ",";
+    *imu_str += accel_.y; *imu_str += ",";
+    *imu_str += accel_.z; *imu_str += ",";
+    *imu_str += gyro_.x;  *imu_str += ",";
+    *imu_str += gyro_.y;  *imu_str += ",";
+    *imu_str += gyro_.z;  *imu_str += "%";
 }
 
 void IMU::setOffsets(const std::array<int16_t, 6>& offsets) {

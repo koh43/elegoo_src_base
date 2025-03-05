@@ -680,6 +680,34 @@ static esp_err_t serial_http_handler(httpd_req_t *req) {
     return httpd_resp_send(req, data.c_str(), data.length());
 }
 
+static esp_err_t serial_get_handler(httpd_req_t *req) {
+    Serial.println("Received HTTP GET on /serial_get");
+
+    // Buffer for query string
+    char query[100];
+    size_t query_len = httpd_req_get_url_query_len(req) + 1;
+    if (query_len > 1) {
+        httpd_req_get_url_query_str(req, query, query_len);
+        Serial.printf("Query string: %s\n", query);
+    } else {
+        Serial.println("No query parameters received");
+        return httpd_resp_send(req, "Missing data", HTTPD_RESP_USE_STRLEN);
+    }
+
+    // Extract 'message' parameter
+    char message[50];
+    if (httpd_query_key_value(query, "message", message, sizeof(message)) == ESP_OK) {
+        Serial.printf("Extracted message: %s\n", message);
+        Serial1.println(message);  // Send to Arduino
+    } else {
+        Serial.println("'message' parameter missing");
+        return httpd_resp_send(req, "Missing 'message' parameter", HTTPD_RESP_USE_STRLEN);
+    }
+
+    return httpd_resp_send(req, "OK", HTTPD_RESP_USE_STRLEN);
+}
+
+
 void startCameraServer() {
   // Add Serial Handler
 
@@ -843,6 +871,19 @@ void startCameraServer() {
 #endif
   };
 
+  httpd_uri_t serial_get_uri = {
+    .uri = "/serial_get",
+    .method = HTTP_GET,
+    .handler = serial_get_handler,
+    .user_ctx = NULL
+#ifdef CONFIG_HTTPD_WS_SUPPORT
+    ,
+    .is_websocket = true,
+    .handle_ws_control_frames = false,
+    .supported_subprotocol = NULL
+#endif
+  };
+
   ra_filter_init(&ra_filter, 20);
 
   log_i("Starting web server on port: '%d'", config.server_port);
@@ -861,6 +902,8 @@ void startCameraServer() {
 
     // Add Serial Handler
     httpd_register_uri_handler(camera_httpd, &serial_uri);
+    httpd_register_uri_handler(camera_httpd, &serial_get_uri);
+    Serial.println("✅ /serial_post endpoint registered!");
   }
 
   config.server_port += 1;

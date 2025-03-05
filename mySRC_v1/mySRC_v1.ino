@@ -1,9 +1,16 @@
+#include <SoftwareSerial.h>
 #include "SmartCar.h"
 
 SmartCar smart_car;
 
+// Connection with the ESP32 module
+constexpr uint8_t UART_RX_PIN = 0;
+constexpr uint8_t UART_TX_PIN = 1;
+SoftwareSerial mySerial(UART_RX_PIN, UART_TX_PIN);
+
 void setup() {
     Serial.begin(115200);
+    mySerial.begin(115200);
     smart_car.Init();
 #ifdef USE_LED_CTRL
     smart_car.led_set_color(0, CRGB::Red);
@@ -11,42 +18,46 @@ void setup() {
 } // setup()
 
 void loop() {
+    String data_str;
 
-// test IMU (MPU6050)
-#ifdef USE_IMU
-    smart_car.imu_update();
-#endif
+    // Check if it is receiving remote serial input
+    // if (mySerial.available()) {
+    //     String received = mySerial.readStringUntil('\n');
+    //     Serial.println(received);
+    // }
 
 // test servo motor
 #ifdef USE_SERVO_CTRL
-    if (Serial.available() > 0) {
-        String input = Serial.readStringUntil('\n');
-        input.trim(); // Remove any trailing spaces or newline characters
+    if (mySerial.available()) {
+        String received = mySerial.readStringUntil('\n');
+        received.trim(); // Remove any trailing spaces or newline characters
         // Check if the input is a number
-        if (isNumber(input)) {
+        if (isNumber(received)) {
             // Convert to integer and move the servo
-            uint8_t angle = input.toInt();
+            uint8_t angle = received.toInt();
             smart_car.servo_move_to(angle);
         } else {
             // If it's not a number, process as a sequence of commands
-            for (unsigned int i = 0; i < input.length(); i++) {
-                char command = input.charAt(i);
+            for (unsigned int i = 0; i < received.length(); i++) {
+                char command = received.charAt(i);
                 servoCommand(smart_car, command);  // Process each command letter
             }
         }
     }
     smart_car.servo_update();
 #endif
+
+// test IMU (MPU6050)
+#ifdef USE_IMU
+    smart_car.imu_update(&data_str);
+#endif
     
 // test ultrasonic sensor
 #ifdef USE_ULTRASONIC
     float us_dist;
     if (smart_car.get_us_dist(&us_dist)) {
-        Serial.print("Distance:");
-        Serial.print("\t");
-        Serial.print(us_dist);
-        Serial.print("\t");
-        Serial.print("(cm)\n");
+        data_str += "us_dist:";
+        data_str += String(us_dist/100) + "%";
     }
 #endif
 // test ir remote controller
@@ -70,11 +81,8 @@ void loop() {
 #ifdef USE_VOLTAGE
     float volt_ms;
     smart_car.measure_voltage(&volt_ms);
-    Serial.print("Voltage:");
-    Serial.print("\t");
-    Serial.print(volt_ms);
-    Serial.print("\t");
-    Serial.print("(V)\n");
+    data_str += "voltage:";
+    data_str += String(volt_ms) + "%";
 #endif
 
 // test key detect
@@ -96,14 +104,10 @@ void loop() {
     smart_car.get_line_tracker(&lt_l, 'L');
     smart_car.get_line_tracker(&lt_m, 'M');
     smart_car.get_line_tracker(&lt_r, 'R');
-    Serial.print("Line Tracker (L, M, R):");
-    Serial.print("\t");
-    Serial.print(lt_l);
-    Serial.print("\t");
-    Serial.print(lt_m);
-    Serial.print("\t");
-    Serial.print(lt_r);
-    Serial.print("\n");
+    data_str += "line_tracker:";
+    data_str += String(lt_l) + ",";
+    data_str += String(lt_m) + ",";
+    data_str += String(lt_r) + "%";
 #endif
 
 // test motor control
@@ -111,6 +115,8 @@ void loop() {
     smart_car.move_motor('l', true, 50);
     smart_car.move_motor('r', true, 50);
 #endif
+
+    Serial.println(data_str);
 
 } // loop()
 

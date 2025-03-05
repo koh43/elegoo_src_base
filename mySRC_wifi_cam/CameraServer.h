@@ -34,17 +34,25 @@
 
 #include "esp_camera.h"
 #include <WiFi.h>
+#include <ESPmDNS.h>
 #include "camera_pins.h"
+#include "config.h"
 
 class CameraServer {
 public:
     void Init();
 private:
     // ===========================
-    // Enter your WiFi credentials
+    // Your WiFi credentials
+    // Create a file named "config.h" and add as follows:
+    // #define DEVICE_ID "MyEsp32"
+    // Now, you don't need to check the ip address every time, but just type "MyEsp32.local" in your browser!
+    // #define WIFI_SSID "YourWiFiSSID"
+    // #define WIFI_PASSWORD "YourWiFiPassword"
     // ===========================
-    const char* ssid_ = "your_wifi_ssid";
-    const char* password_ = "your_wifi_password";
+    const char* device_id_ = DEVICE_ID;
+    const char* ssid_ = WIFI_SSID;
+    const char* password_ = WIFI_PASSWORD;
 };
 
 #endif // CAMERA_SERVER_H
