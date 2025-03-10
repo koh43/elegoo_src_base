@@ -19,9 +19,8 @@ void IMU::Init() {
     else{
         Serial.println("MPU6050 connection successful");
     }
-    /* Use the code below to change accel/gyro offset values. Use MPU6050_Zero to obtain the recommended offsets */ 
-    Serial.println("Updating internal sensor offsets...\n");
-    setOffsets({0,0,0,0,0,0});
+    Serial.println("Applying offsets...");
+    setOffsets(offsets_);
 }
 
 void IMU::Update(String* imu_str) {

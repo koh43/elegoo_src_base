@@ -41,6 +41,7 @@
 class CameraServer {
 public:
     void Init();
+    IPAddress getIPaddress() const;
 private:
     // ===========================
     // Your WiFi credentials
@@ -53,6 +54,7 @@ private:
     const char* device_id_ = DEVICE_ID;
     const char* ssid_ = WIFI_SSID;
     const char* password_ = WIFI_PASSWORD;
+    IPAddress ip_address_;
 };
 
 #endif // CAMERA_SERVER_H

@@ -672,13 +672,13 @@ static esp_err_t index_handler(httpd_req_t *req) {
 }
 
 // HTTP handler for the `/serial` URI
-extern SerialHandler serial_handler;
-static esp_err_t serial_http_handler(httpd_req_t *req) {
-    String data = serial_handler.getLastData();
+// extern SerialHandler serial_handler;
+// static esp_err_t serial_http_handler(httpd_req_t *req) {
+//     String data = serial_handler.getLastData();
 
-    httpd_resp_set_type(req, "text/plain");
-    return httpd_resp_send(req, data.c_str(), data.length());
-}
+//     httpd_resp_set_type(req, "text/plain");
+//     return httpd_resp_send(req, data.c_str(), data.length());
+// }
 
 static esp_err_t serial_get_handler(httpd_req_t *req) {
     Serial.println("Received HTTP GET on /serial_get");
@@ -709,8 +709,6 @@ static esp_err_t serial_get_handler(httpd_req_t *req) {
 
 
 void startCameraServer() {
-  // Add Serial Handler
-
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   config.max_uri_handlers = 16;
 
@@ -858,18 +856,18 @@ void startCameraServer() {
   };
 
   // Add Serial Handler
-  httpd_uri_t serial_uri = {
-    .uri = "/serial",
-    .method = HTTP_GET,
-    .handler = serial_http_handler,
-    .user_ctx = NULL
-#ifdef CONFIG_HTTPD_WS_SUPPORT
-    ,
-    .is_websocket = true,
-    .handle_ws_control_frames = false,
-    .supported_subprotocol = NULL
-#endif
-  };
+//   httpd_uri_t serial_uri = {
+//     .uri = "/serial",
+//     .method = HTTP_GET,
+//     .handler = serial_http_handler,
+//     .user_ctx = NULL
+// #ifdef CONFIG_HTTPD_WS_SUPPORT
+//     ,
+//     .is_websocket = true,
+//     .handle_ws_control_frames = false,
+//     .supported_subprotocol = NULL
+// #endif
+//   };
 
   httpd_uri_t serial_get_uri = {
     .uri = "/serial_get",
@@ -901,7 +899,7 @@ void startCameraServer() {
     httpd_register_uri_handler(camera_httpd, &win_uri);
 
     // Add Serial Handler
-    httpd_register_uri_handler(camera_httpd, &serial_uri);
+    // httpd_register_uri_handler(camera_httpd, &serial_uri);
     httpd_register_uri_handler(camera_httpd, &serial_get_uri);
     Serial.println("✅ /serial_post endpoint registered!");
   }

@@ -12,7 +12,7 @@ Servo_Ctrl servo_ctrl(servo);
 #endif
 
 #ifdef USE_IMU
-MPU6050 mpu;
+MPU6050 mpu(0x68);
 IMU imu(mpu);
 #endif
 

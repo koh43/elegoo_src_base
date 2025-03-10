@@ -115,8 +115,9 @@ void loop() {
     smart_car.move_motor('l', true, 50);
     smart_car.move_motor('r', true, 50);
 #endif
-
-    Serial.println(data_str);
+    data_str += "\n";
+    Serial.write(data_str.c_str(), data_str.length());
+    // Serial.println(data_str);
 
 } // loop()
 

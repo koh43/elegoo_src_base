@@ -1,6 +1,7 @@
 #include "CameraServer.h"
 
 void startCameraServer();
+
 void setupLedFlash(int pin);
 
 void CameraServer::Init() {
@@ -108,16 +109,20 @@ void CameraServer::Init() {
     }
     Serial.println("");
     Serial.println("WiFi connected");
+    Serial.print("Camera Ready! Use 'http://");
+    ip_address_ = WiFi.localIP();
+    Serial.print(ip_address_);
+    Serial.println("' to connect");
+
+    startCameraServer();
 
     if (MDNS.begin(device_id_)) {
         Serial.println("mDNS responder started");
     } else {
         Serial.println("Error setting up mDNS!");
     }
+}
 
-    startCameraServer();
-
-    Serial.print("Camera Ready! Use 'http://");
-    Serial.print(WiFi.localIP());
-    Serial.println("' to connect");
+IPAddress CameraServer::getIPaddress() const {
+    return ip_address_;
 }

@@ -20,6 +20,7 @@ private:
     MPU6050* mpu_;
     VectorInt16 accel_;
     VectorInt16 gyro_;
+    std::array<int16_t, 6> offsets_ = {-3965, -3717, 1169, 68, 42, -19};
 };
 
 #endif // IMU_H
