@@ -25,7 +25,9 @@ In VS Code:
 
 1. Open the Extensions Marketplace.
 2. Search for and install **"Arduino Community Edition"**.
-
+3. Go to the Settings of the **"Arduino Community Edition"**.
+4. Set the **"Arduino: Path"** where you installed the arduino-cli.
+5. Check the box on **"Arduino: Use Arduino Cli"**
 ---
 
 ## 5. Configure Your Arduino Project in VS Code
