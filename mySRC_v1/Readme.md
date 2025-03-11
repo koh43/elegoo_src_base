@@ -60,5 +60,15 @@ In VS Code:
 
 ## Troubleshooting
 1. If you have compile errors related to "std::nothrow", follow this [link](https://github.com/mike-matera/ArduinoSTL/issues/84#issuecomment-1337008712)
+2. If you have compile errors related to
+```
+new:61:14: error: redefinition of 'void* operator new(size_t, void*)' inline void* operator new(std::size_t, void* ptr) _UCXX_USE_NOEXCEPT {return ptr; }
+```
+replace the line with the following
+```
+#ifndef _NO_EXCEPT  // If FastLED didn't define _NO_EXCEPT, then define operator new
+inline void* operator new(std::size_t, void* ptr) _UCXX_USE_NOEXCEPT { return ptr; }
+#endif
+```
 
 You are now ready to use Arduino-CLI with VS Code!
