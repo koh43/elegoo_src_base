@@ -3,16 +3,16 @@
 
 #include <Arduino.h>
 
-constexpr size_t DATA_BUFFER_SIZE = 256;
+constexpr size_t DATA_BUFFER_SIZE = 128;
 
 class SerialHandler {
 public:
     void receiveData(HardwareSerial& serial);
-    const uint8_t* getLastData() const;
+    const char* getLastData() const;
     size_t getLastDataSize() const;
 
 private:
-    uint8_t lastData_[DATA_BUFFER_SIZE];
+    char lastData_[DATA_BUFFER_SIZE];
     size_t lastDataSize_;
 };
     

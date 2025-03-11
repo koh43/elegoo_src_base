@@ -9,9 +9,10 @@ constexpr uint8_t UART_TX_PIN = 1;
 SoftwareSerial mySerial(UART_RX_PIN, UART_TX_PIN);
 
 // Buffers
-constexpr size_t BUFFER_SIZE = 128;
-char cmd_buffer[BUFFER_SIZE];
-char data_buffer[BUFFER_SIZE];
+constexpr size_t CMD_BUFFER_SIZE = 64;
+constexpr size_t DATA_BUFFER_SIZE = 128;
+char cmd_buffer[CMD_BUFFER_SIZE];
+char data_buffer[DATA_BUFFER_SIZE];
 
 void setup() {
     Serial.begin(115200);
@@ -39,19 +40,17 @@ void processCommands() {
     Serial.print("Received: ");
     Serial.println(cmd_buffer);
 
-    char cmd_device[16];
-    char cmd_value[32];
-
     char* sep_ptr = strchr(cmd_buffer, ':');
     if (!sep_ptr) return;
+    *sep_ptr = '\0';
 
-    strncpy(cmd_device, cmd_buffer, sep_ptr - cmd_buffer);
-    cmd_device[sep_ptr - cmd_buffer] = '\0';
-    strcpy(cmd_value, sep_ptr + 1);
+    const char* cmd_device = cmd_buffer;
+    const char* cmd_value = sep_ptr + 1;
 
 // servo control
 #ifdef USE_SERVO_CTRL
     if (strcmp(cmd_device, "servo") == 0) {
+        Serial.println("Moving Servo...");
         processServo(cmd_value);
     }
     smart_car.servo_update();
@@ -60,6 +59,7 @@ void processCommands() {
 // motor control
 #ifdef USE_MOTOR_CTRL
     if (strcmp(cmd_device, "motor") == 0) {
+        Serial.println("Moving motor...");
         processMotor(cmd_value);
     }
 #endif
@@ -129,7 +129,7 @@ char imu_data[48];
     smart_car.imu_update(imu_data);
     index += snprintf(
         data_buffer + index,
-        BUFFER_SIZE - index,
+        DATA_BUFFER_SIZE - index,
         "%s", imu_data
     );
 #endif
@@ -142,7 +142,7 @@ char imu_data[48];
         dtostrf(us_dist, 6, 4, buffer);
         index += snprintf(
             data_buffer + index,
-            BUFFER_SIZE - index,
+            DATA_BUFFER_SIZE - index,
             "us_dist:%s%%",
             buffer
         );
@@ -173,7 +173,7 @@ char imu_data[48];
         dtostrf(volt_ms, 3, 2, buffer);
         index += snprintf(
             data_buffer + index,
-            BUFFER_SIZE - index,
+            DATA_BUFFER_SIZE - index,
             "voltage:%s%%",
             buffer
         );
@@ -202,12 +202,13 @@ char imu_data[48];
     smart_car.get_line_tracker(&lt_r, 'R');
     index += snprintf(
         data_buffer + index,
-        BUFFER_SIZE - index,
+        DATA_BUFFER_SIZE - index,
         "line_tracker:%d,%d,%d%%",
         lt_l, lt_m, lt_r
     );
 #endif
-    // Serial.write(data_buffer, strlen(data_buffer));
-    data_buffer[index] = '\0';
-    Serial.println(data_buffer);
+    data_buffer[index] = '\n';
+    data_buffer[index + 1] = '\0';
+    Serial.write(data_buffer, strlen(data_buffer));
+    // Serial.println(data_buffer);
 }

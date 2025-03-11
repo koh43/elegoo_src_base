@@ -12,6 +12,9 @@ constexpr uint8_t STATUS_LED_PIN = 46;
 constexpr int UDP_PORT = 9750;
 bool led_flag = false;
 
+constexpr size_t CMD_BUFFER_SIZE = 64;
+char cmd_buffer[CMD_BUFFER_SIZE];
+
 WiFiUDP udp;
 
 void setup() {
@@ -26,30 +29,31 @@ void setup() {
 
 void loop() {
 	serial_handler.receiveData(Serial1);
+
 	// Check if it is receiving from the Arduino
-	const uint8_t* last_data = serial_handler.getLastData();
+	const char* last_data = serial_handler.getLastData();
+	Serial.print(last_data);
 	size_t last_data_size = serial_handler.getLastDataSize();
 	if (last_data_size > 0) {
 		udp.beginPacket("255.255.255.255", UDP_PORT);
-		udp.write(last_data, last_data_size);
+		udp.write(
+			reinterpret_cast<const uint8_t*>(last_data),
+			last_data_size
+		);
 		udp.endPacket();
-	}
-	
-	if (led_flag) {
-		digitalWrite(STATUS_LED_PIN, LOW);
-		led_flag = false;
-	}
-	else {
-		digitalWrite(STATUS_LED_PIN, HIGH);
-		led_flag = true;
+		delay(5);
 	}
 
-	if (Serial.available()) {
-		String command = Serial.readStringUntil('\n');
-		Serial1.print(command);
+	digitalWrite(STATUS_LED_PIN, led_flag ? LOW : HIGH);
+	led_flag = !led_flag;
+
+	int packet_size = udp.parsePacket();
+	if (packet_size > 0) {
+		int len = udp.read(cmd_buffer, CMD_BUFFER_SIZE - 1);
+		cmd_buffer[len] = '\0';
+		Serial1.write(cmd_buffer, strlen(cmd_buffer));
 		Serial.print("Sent to Arduino: ");
-		Serial.println(command);
+		Serial.println(cmd_buffer);
+		delay(5);
 	}
-
-	delay(5);
 }
