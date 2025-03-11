@@ -7,7 +7,7 @@ Comment or uncomment based on the codes you want to run!
 
 // #define USE_IR_RM_CTRL
 
-// #define USE_MOTOR_CTRL
+#define USE_MOTOR_CTRL
 #define USE_ULTRASONIC
 #define USE_VOLTAGE
 #define USE_LINE_TRACKER

@@ -21,7 +21,7 @@ void setup() {
 	udp.begin(UDP_PORT);
 	pinMode(STATUS_LED_PIN, OUTPUT);
 	digitalWrite(STATUS_LED_PIN, HIGH);
-	// delay(100);
+	delay(10);
 }
 
 void loop() {
@@ -33,7 +33,6 @@ void loop() {
 		udp.beginPacket("255.255.255.255", UDP_PORT);
 		udp.write(last_data, last_data_size);
 		udp.endPacket();
-		delay(5);
 	}
 	
 	if (led_flag) {
@@ -44,4 +43,13 @@ void loop() {
 		digitalWrite(STATUS_LED_PIN, HIGH);
 		led_flag = true;
 	}
+
+	if (Serial.available()) {
+		String command = Serial.readStringUntil('\n');
+		Serial1.print(command);
+		Serial.print("Sent to Arduino: ");
+		Serial.println(command);
+	}
+
+	delay(5);
 }

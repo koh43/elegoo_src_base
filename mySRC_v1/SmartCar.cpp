@@ -213,7 +213,7 @@ void SmartCar::move_motor(
 
 // IMU
 #ifdef USE_IMU
-void SmartCar::imu_update(String* imu_str) {
+void SmartCar::imu_update(char* imu_str) {
     imu_->Update(imu_str);
 }
 

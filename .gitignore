@@ -1,3 +1,4 @@
-/build
+**/mySRC_wifi_cam/build/**
+**/mySRC_v1/build/**
 **/.vscode/**
 mySRC_wifi_cam/config.h

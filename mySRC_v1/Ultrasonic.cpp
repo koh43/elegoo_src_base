@@ -28,10 +28,10 @@ bool Ultrasonic::Distance(float* us_dist) {
     float distance = duration * ULTRASONIC_SENSOR_SPEED / 2; // (cm)
     
     if (distance > ULTRASONIC_MAX_DIST) {
-        *us_dist = ULTRASONIC_MAX_DIST;
+        *us_dist = ULTRASONIC_MAX_DIST/100;
     }
     else {
-        *us_dist = distance;        
+        *us_dist = distance/100;
     }
     return true;
 }

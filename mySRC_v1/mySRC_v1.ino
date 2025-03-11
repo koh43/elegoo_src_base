@@ -8,6 +8,11 @@ constexpr uint8_t UART_RX_PIN = 0;
 constexpr uint8_t UART_TX_PIN = 1;
 SoftwareSerial mySerial(UART_RX_PIN, UART_TX_PIN);
 
+// Buffers
+constexpr size_t BUFFER_SIZE = 128;
+char cmd_buffer[BUFFER_SIZE];
+char data_buffer[BUFFER_SIZE];
+
 void setup() {
     Serial.begin(115200);
     mySerial.begin(115200);
@@ -18,48 +23,132 @@ void setup() {
 } // setup()
 
 void loop() {
-    String data_str;
+    processCommands();
+    processSensors();
+} // loop()
 
-    // Check if it is receiving remote serial input
-    // if (mySerial.available()) {
-    //     String received = mySerial.readStringUntil('\n');
-    //     Serial.println(received);
-    // }
+// ===========================
+// Command Processing
+// ===========================
+void processCommands() {
+    if (!mySerial.available()) return;
 
-// test servo motor
+    int cmd_len = mySerial.readBytesUntil('\n', cmd_buffer, sizeof(cmd_buffer) - 1);
+    cmd_buffer[cmd_len] = '\0'; // Add null terminator
+
+    Serial.print("Received: ");
+    Serial.println(cmd_buffer);
+
+    char cmd_device[16];
+    char cmd_value[32];
+
+    char* sep_ptr = strchr(cmd_buffer, ':');
+    if (!sep_ptr) return;
+
+    strncpy(cmd_device, cmd_buffer, sep_ptr - cmd_buffer);
+    cmd_device[sep_ptr - cmd_buffer] = '\0';
+    strcpy(cmd_value, sep_ptr + 1);
+
+// servo control
 #ifdef USE_SERVO_CTRL
-    if (mySerial.available()) {
-        String received = mySerial.readStringUntil('\n');
-        received.trim(); // Remove any trailing spaces or newline characters
-        // Check if the input is a number
-        if (isNumber(received)) {
-            // Convert to integer and move the servo
-            uint8_t angle = received.toInt();
-            smart_car.servo_move_to(angle);
-        } else {
-            // If it's not a number, process as a sequence of commands
-            for (unsigned int i = 0; i < received.length(); i++) {
-                char command = received.charAt(i);
-                servoCommand(smart_car, command);  // Process each command letter
-            }
-        }
+    if (strcmp(cmd_device, "servo") == 0) {
+        processServo(cmd_value);
     }
     smart_car.servo_update();
 #endif
 
+// motor control
+#ifdef USE_MOTOR_CTRL
+    if (strcmp(cmd_device, "motor") == 0) {
+        processMotor(cmd_value);
+    }
+#endif
+}
+
+// ===========================
+// Servo Processing
+// ===========================
+#ifdef USE_SERVO_CTRL
+void processServo(const char* cmd_value) {
+    // Check if the input is a number
+    if (isNumber(cmd_value)) {
+        // Convert to integer and move the servo
+        uint8_t angle = atoi(cmd_value);
+        smart_car.servo_move_to(angle);
+    } else {
+        // If it's not a number, process as a sequence of commands
+        for (unsigned int i = 0; i < strlen(cmd_value); i++) {
+            servoCommand(smart_car, cmd_value[i]);  // Process each command letter
+        }
+    }
+}
+
+bool isNumber(const char* input) {
+    for (unsigned int i = 0; input[i] != '\0'; i++) {
+        if (!isdigit(input[i])) return false;
+    }
+    return true;
+}
+
+void servoCommand(SmartCar& smart_car, char command) {
+    switch (tolower(command)) {
+        case 'a': smart_car.servo_turn_left(); break;
+        case 'd': smart_car.servo_turn_right(); break;
+        case 'r': smart_car.servo_reset(); break;
+        default: break;
+    }
+}
+#endif
+
+// ===========================
+// Motor Processing
+// ===========================
+#ifdef USE_MOTOR_CTRL
+void processMotor(const char* cmd_value) {
+    char side;
+    int rot_dir, speed;
+    if (sscanf(cmd_value, "%c,%d,%d", &side, &rot_dir, &speed) == 3) {
+        bool rot_dir_bool = (rot_dir == 1); // Convert -1/1 to boolean
+        smart_car.move_motor(side, rot_dir, speed);
+    }
+    else {
+        Serial.println("Invalid motor command format.");
+    }
+}
+#endif
+
+// ===========================
+// Sensor Processing
+// ===========================
+void processSensors() {
+    int index = 0;
+
 // test IMU (MPU6050)
 #ifdef USE_IMU
-    smart_car.imu_update(&data_str);
+char imu_data[48];
+    smart_car.imu_update(imu_data);
+    index += snprintf(
+        data_buffer + index,
+        BUFFER_SIZE - index,
+        "%s", imu_data
+    );
 #endif
     
 // test ultrasonic sensor
 #ifdef USE_ULTRASONIC
     float us_dist;
     if (smart_car.get_us_dist(&us_dist)) {
-        data_str += "us_dist:";
-        data_str += String(us_dist/100) + "%";
+        char buffer[16];
+        dtostrf(us_dist, 6, 4, buffer);
+        index += snprintf(
+            data_buffer + index,
+            BUFFER_SIZE - index,
+            "us_dist:%s%%",
+            buffer
+        );
     }
 #endif
+
 // test ir remote controller
 #ifdef USE_IR_RM_CTRL
     char ir_rm_ctrl_data;
@@ -68,12 +157,10 @@ void loop() {
         Serial.print(ir_rm_ctrl_data);
         Serial.print(" \n");
     }
-
 #endif
 
 // test led control
 #ifdef USE_LED_CTRL
-    // smart_car.led_blink(0);
     smart_car.led_switch(0);
 #endif
 
@@ -81,8 +168,17 @@ void loop() {
 #ifdef USE_VOLTAGE
     float volt_ms;
     smart_car.measure_voltage(&volt_ms);
-    data_str += "voltage:";
-    data_str += String(volt_ms) + "%";
+    if (volt_ms >= 0){
+        char buffer[16];
+        dtostrf(volt_ms, 3, 2, buffer);
+        index += snprintf(
+            data_buffer + index,
+            BUFFER_SIZE - index,
+            "voltage:%s%%",
+            buffer
+        );
+    }
+    
 #endif
 
 // test key detect
@@ -104,47 +200,14 @@ void loop() {
     smart_car.get_line_tracker(&lt_l, 'L');
     smart_car.get_line_tracker(&lt_m, 'M');
     smart_car.get_line_tracker(&lt_r, 'R');
-    data_str += "line_tracker:";
-    data_str += String(lt_l) + ",";
-    data_str += String(lt_m) + ",";
-    data_str += String(lt_r) + "%";
+    index += snprintf(
+        data_buffer + index,
+        BUFFER_SIZE - index,
+        "line_tracker:%d,%d,%d%%",
+        lt_l, lt_m, lt_r
+    );
 #endif
-
-// test motor control
-#ifdef USE_MOTOR_CTRL
-    smart_car.move_motor('l', true, 50);
-    smart_car.move_motor('r', true, 50);
-#endif
-    data_str += "\n";
-    Serial.write(data_str.c_str(), data_str.length());
-    // Serial.println(data_str);
-
-} // loop()
-
-// Function to check if a string represents a number
-#ifdef USE_SERVO_CTRL
-bool isNumber(String& input) {
-    for (unsigned int i = 0; i < input.length(); i++) {
-        if (!isdigit(input.charAt(i))) {
-            return false;
-        }
-    }
-    return true;
+    // Serial.write(data_buffer, strlen(data_buffer));
+    data_buffer[index] = '\0';
+    Serial.println(data_buffer);
 }
-
-void servoCommand(SmartCar& smart_car, char command) {
-    switch (tolower(command)) {
-        case 'a':
-            smart_car.servo_turn_left();  // Assuming you have a TurnLeft method
-            break;
-        case 'd':
-            smart_car.servo_turn_right(); // Assuming you have a TurnRight method
-            break;
-        case 'r':
-            smart_car.servo_reset(); // Reset to initial position
-            break;
-        default:
-            break;
-    }
-}
-#endif
