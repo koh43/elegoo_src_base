@@ -108,7 +108,7 @@ public:
 #ifdef USE_IMU
     void imu_update(char* imu_str);
     void imu_set_offsets(const std::array<int16_t, 6>& offsets);
-    std::array<int16_t, 6> imu_get_offsets();
+    void imu_get_offsets(std::array<int16_t, 6>& offsets);
 #endif
 
 // ========== private ==========

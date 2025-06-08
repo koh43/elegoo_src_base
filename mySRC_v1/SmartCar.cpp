@@ -221,7 +221,7 @@ void SmartCar::imu_set_offsets(const std::array<int16_t, 6>& offsets) {
     imu_->setOffsets(offsets);
 }
 
-std::array<int16_t, 6> SmartCar::imu_get_offsets() {
-    return imu_->getOffsets();
+void SmartCar::imu_get_offsets(std::array<int16_t, 6>& offsets) {
+    return imu_->getOffsets(offsets);
 }
 #endif

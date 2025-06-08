@@ -9,8 +9,8 @@ constexpr uint8_t UART_TX_PIN = 1;
 SoftwareSerial mySerial(UART_RX_PIN, UART_TX_PIN);
 
 // Buffers
-constexpr size_t CMD_BUFFER_SIZE = 64;
-constexpr size_t DATA_BUFFER_SIZE = 128;
+constexpr size_t CMD_BUFFER_SIZE = 32;
+constexpr size_t DATA_BUFFER_SIZE = 64;
 char cmd_buffer[CMD_BUFFER_SIZE];
 char data_buffer[DATA_BUFFER_SIZE];
 
@@ -37,7 +37,7 @@ void processCommands() {
     int cmd_len = mySerial.readBytesUntil('\n', cmd_buffer, sizeof(cmd_buffer) - 1);
     cmd_buffer[cmd_len] = '\0'; // Add null terminator
 
-    Serial.print("Received: ");
+    Serial.print(F("Received: "));
     Serial.println(cmd_buffer);
 
     char* sep_ptr = strchr(cmd_buffer, ':');
@@ -153,9 +153,9 @@ char imu_data[48];
 #ifdef USE_IR_RM_CTRL
     char ir_rm_ctrl_data;
     if (smart_car.get_ctrl_input(&ir_rm_ctrl_data)) {
-        Serial.print("IR Remote Input: ");
+        Serial.print(F("IR Remote Input: "));
         Serial.print(ir_rm_ctrl_data);
-        Serial.print(" \n");
+        Serial.print(F(" \n"));
     }
 #endif
 
@@ -186,10 +186,10 @@ char imu_data[48];
     smart_car.key_detect_update();
     uint8_t key_data;
     smart_car.key_detect_get(&key_data);
-    Serial.print("Key Data:");
-    Serial.print("\t");
+    Serial.print(F("Key Data:"));
+    Serial.print(F("\t"));
     Serial.print(key_data);
-    Serial.print("\n");
+    Serial.print(F("\n"));
 #endif
 
 // test line tracker
