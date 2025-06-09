@@ -9,8 +9,8 @@ constexpr uint8_t UART_TX_PIN = 1;
 SoftwareSerial mySerial(UART_RX_PIN, UART_TX_PIN);
 
 // Buffers
-constexpr size_t CMD_BUFFER_SIZE = 32;
-constexpr size_t DATA_BUFFER_SIZE = 64;
+constexpr size_t CMD_BUFFER_SIZE = 16;
+constexpr size_t DATA_BUFFER_SIZE = MAX_SENSOR_DATA_BUFFER_SIZE;
 char cmd_buffer[CMD_BUFFER_SIZE];
 char data_buffer[DATA_BUFFER_SIZE];
 
@@ -125,7 +125,7 @@ void processSensors() {
 
 // test IMU (MPU6050)
 #ifdef USE_IMU
-char imu_data[48];
+char imu_data[IMU_DATA_BUFFER_SIZE];
     smart_car.imu_update(imu_data);
     index += snprintf(
         data_buffer + index,
@@ -138,12 +138,12 @@ char imu_data[48];
 #ifdef USE_ULTRASONIC
     float us_dist;
     if (smart_car.get_us_dist(&us_dist)) {
-        char buffer[16];
+        char buffer[US_DATA_BUFFER_SIZE];
         dtostrf(us_dist, 6, 4, buffer);
         index += snprintf(
             data_buffer + index,
             DATA_BUFFER_SIZE - index,
-            "us_dist:%s%%",
+            "US:%s%%",
             buffer
         );
     }
@@ -169,12 +169,12 @@ char imu_data[48];
     float volt_ms;
     smart_car.measure_voltage(&volt_ms);
     if (volt_ms >= 0){
-        char buffer[16];
+        char buffer[VOLTAGE_DATA_BUFFER_SIZE];
         dtostrf(volt_ms, 3, 2, buffer);
         index += snprintf(
             data_buffer + index,
             DATA_BUFFER_SIZE - index,
-            "voltage:%s%%",
+            "V:%s%%",
             buffer
         );
     }
@@ -203,7 +203,7 @@ char imu_data[48];
     index += snprintf(
         data_buffer + index,
         DATA_BUFFER_SIZE - index,
-        "line_tracker:%d,%d,%d%%",
+        "LT:%d,%d,%d%%",
         lt_l, lt_m, lt_r
     );
 #endif

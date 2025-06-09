@@ -7,7 +7,7 @@
 #include "I2Cdev.h"
 #include "MPU6050.h"
 
-constexpr uint16_t usDelay = 3150; // empirical, to hold sampling to 200 Hz
+constexpr uint16_t usDelay = 1500; // empirical, to hold sampling to 200 Hz
 constexpr uint16_t NFast = 1000;   // the bigger, the better (but slower)
 constexpr uint16_t NSlow = 10000;  // ..
 
