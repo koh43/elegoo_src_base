@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-constexpr size_t DATA_BUFFER_SIZE = 128;
+constexpr size_t DATA_BUFFER_SIZE = 96;
 
 class SerialHandler {
 public:
@@ -17,15 +17,3 @@ private:
 };
     
 #endif // SERIAL_HANDLER_H
-
-
-// class SerialHandler {
-// public:
-//     void receiveData(HardwareSerial& serial);
-//     String getLastData();
-
-// private:
-//     String lastData_;
-// };
-
-// #endif // SERIAL_HANDLER_H

@@ -31,6 +31,7 @@ void loop() {
 	serial_handler.receiveData(Serial1);
 	const char* last_data = serial_handler.getLastData();
 	size_t last_data_size = serial_handler.getLastDataSize();
+
 	// Check if it is receiving from the Arduino
 	// Serial.print(last_data);
 	if (last_data_size > 0) {
@@ -39,8 +40,9 @@ void loop() {
 			reinterpret_cast<const uint8_t*>(last_data),
 			last_data_size
 		);
-		udp.endPacket();
-		delay(2);
+		if (!udp.endPacket()) {
+            Serial.println("UDP send failed!");
+        }
 	}
 
 	digitalWrite(STATUS_LED_PIN, led_flag ? LOW : HIGH);
@@ -53,6 +55,6 @@ void loop() {
 		Serial1.write(cmd_buffer, strlen(cmd_buffer));
 		Serial.print("Sent to Arduino: ");
 		Serial.println(cmd_buffer);
-		delay(2);
+		// delay(5);
 	}
 }
